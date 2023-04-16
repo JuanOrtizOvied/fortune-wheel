@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --port 5001",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "bootstrap": "rm -rf node_modules && yarn install"
   },
   "devDependencies": {
     "vite": "^4.2.0"
