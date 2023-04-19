@@ -10,9 +10,7 @@
     "bootstrap": "rm -rf node_modules && yarn install"
   },
   "devDependencies": {
+    "sass": "^1.62.0",
     "vite": "^4.2.0"
-  },
-  "dependencies": {
-    "sass": "^1.62.0"
   }
 }
