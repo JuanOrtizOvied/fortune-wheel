@@ -1,4 +1,5 @@
 import './style.scss'
+import { Power1, Power4, gsap } from 'gsap'
 
 // luckywheel animation with Greensock  ---------------------------------
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,8 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
       tolerance,
       deg,
       
-      $btnPlay = document.getElementsByClassName('btnPlay'),
-      $btnSlowMo = document.getElementsByClassName('btnSlowMo');
+      btnPlay = document.getElementById('btnPlay'),
+      btnSlowMo = document.getElementById('btnSlowMo');
   
   //  Random degree
       function getRandomInt(min, max) {
@@ -21,22 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(deg);
   
   //  Creating the Timeline
-      var indicator = new TimelineMax();
-      var spinWheel = new TimelineMax();
-      indicator.to(active, .13, {rotation: -10, transformOrigin:"65% 36%", ease:Power1.easeOut})
-               .to(active, .13, {rotation: 3, ease:Power4.easeOut})
+      var indicator = gsap.timeline();
+      var spinWheel = gsap.timeline();
+      indicator.to(active, {duration: .13, rotation: -10, transformOrigin:"65% 36%", ease:Power1.easeOut})
+               .to(active, {duration: .13, rotation: 3, ease:Power4.easeOut})
                .add("end");
   
   //  Luckywheel animation
-      spinWheel.to(wheel, 5, {rotation: deg, transformOrigin:"50% 50%", ease:Power4.easeOut, onUpdate: (
-      function(){    
-        currentRotation = Math.round(this.target[0]._gsTransform.rotation);    //_gsTransform: current position of the wheel
+      spinWheel.to(wheel, {rotation: deg, duration: 5, transformOrigin:"50% 50%", ease:Power4.easeOut, callbackScope: this, onUpdate: function(){    
+        const rotation = gsap.getProperty(this.targets()[0], 'rotation');
+        currentRotation = Math.round(rotation);
         tolerance = currentRotation - lastRotation;
         
           console.log("lastRot: "+lastRotation);
           console.log("currentRot: "+currentRotation);
           console.log("tol: "+tolerance);
-          console.log(indicator.progress());
+          console.log("indicator.progress()---> ",indicator.progress());
           console.log("spinwheelprogress: "+spinWheel.progress());
         
         if(Math.round(currentRotation) % (360/12) <= tolerance){
@@ -45,18 +46,17 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
         lastRotation = currentRotation;
-      }
-      )});
+      }});
       spinWheel.add("end");
    //   Buttons
-    $btnPlay.click(
+    btnPlay.addEventListener('click',
       function(){
         indicator.timeScale(1).seek(0);
         spinWheel.timeScale(1).seek(0);
       }
     );
   
-    $btnSlowMo.click(
+    btnSlowMo.addEventListener('click',
       function(){
         indicator.timeScale(.2).seek(.5);
         spinWheel.timeScale(.2).seek(.5);
