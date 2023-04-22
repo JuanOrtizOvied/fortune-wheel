@@ -18,19 +18,19 @@ document.addEventListener("DOMContentLoaded", () => {
       function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
-      var deg = getRandomInt(360, 1080);
+      var deg = getRandomInt(3600, 7200);
       console.log(deg);
   
   //  Creating the Timeline
       var indicator = gsap.timeline();
       var spinWheel = gsap.timeline();
-      indicator.to(active, {duration: .13, rotation: -10, transformOrigin:"65% 36%", ease:Power1.easeOut})
-               .to(active, {duration: .13, rotation: 3, ease:Power4.easeOut})
+      indicator.to(active, {duration: .13, rotation: -10, transformOrigin:"65% 36%", ease: "power1"})
+               .to(active, {duration: .13, rotation: 3, ease: "power4" })
                .add("end");
   
   //  Luckywheel animation
-      spinWheel.to(wheel, {rotation: deg, duration: 5, transformOrigin:"50% 50%", ease:Power4.easeOut, callbackScope: this, onUpdate: function(){    
-        const rotation = gsap.getProperty(this.targets()[0], 'rotation');
+      spinWheel.to(wheel, {rotation: deg, duration: 5, transformOrigin:"50% 50%", ease: "power4", onUpdate: function(){    
+        const rotation = gsap.getProperty(".wheel", 'rotation');
         currentRotation = Math.round(rotation);
         tolerance = currentRotation - lastRotation;
         
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("spinwheelprogress: "+spinWheel.progress());
         
         if(Math.round(currentRotation) % (360/12) <= tolerance){
-          if(indicator.progress() > .2 || indicator.progress() === 0){
+          if(indicator.progress() > .5 || indicator.progress() === 0){
             indicator.play(0);
           }
         }
@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
     btnSlowMo.addEventListener('click',
       function(){
-        indicator.timeScale(.2).seek(.5);
-        spinWheel.timeScale(.2).seek(.5);
+        indicator.timeScale(0.25).seek(0.01);
+        spinWheel.timeScale(0.25).seek(0.01);
       }
     );
 });
